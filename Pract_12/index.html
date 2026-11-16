@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoneZo | Live Task Manager</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg:#f4f1ea; --ink:#22201c; --card:#fffdf8; --acc:#2f6f4f; --acc2:#e9f3ec; --line:#e2dccf; --warn:#c0452f; --mut:#8a8374; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); padding: 28px 14px; }
+  .app { max-width: 1020px; margin: auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
+  header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  header h1 { font-size: 2rem; letter-spacing: -.02em; }
+  header h1 span { color: var(--acc); }
+  #clock { background: var(--ink); color: #f4f1ea; padding: 8px 16px; border-radius: 99px; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  h2 { font-size: 1.05rem; margin-bottom: 14px; }
+
+  .add { display: flex; gap: 8px; margin-bottom: 14px; }
+  .add input { flex: 1; padding: 12px; border: 1.5px solid var(--line); border-radius: 10px; font: inherit; background: #fff; }
+  .add input:focus { outline: none; border-color: var(--acc); }
+  button { font: inherit; cursor: pointer; border: 0; border-radius: 10px; padding: 10px 16px; font-weight: 600; }
+  .pri { background: var(--acc); color: #fff; }
+  .pri:hover { filter: brightness(1.1); }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat { background: var(--acc2); border-radius: 12px; padding: 10px; text-align: center; }
+  .stat b { display: block; font-size: 1.5rem; color: var(--acc); }
+  .stat small { color: var(--mut); }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 16px; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--acc); transition: width .4s; }
+
+  .filters { display: flex; gap: 6px; margin-bottom: 12px; }
+  .filters button { background: transparent; border: 1px solid var(--line); padding: 6px 14px; font-size: .82rem; }
+  .filters button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  ul { list-style: none; display: grid; gap: 8px; }
+  li { display: flex; align-items: center; gap: 10px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+  li .txt { flex: 1; word-break: break-word; }
+  li.done .txt { text-decoration: line-through; color: var(--mut); }
+  li input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--acc); }
+  li .x { background: transparent; color: var(--warn); font-size: 1.2rem; padding: 2px 8px; }
+  li small { color: var(--mut); font-size: .72rem; }
+  .empty { text-align: center; color: var(--mut); padding: 20px; }
+  .clear { margin-top: 12px; background: transparent; color: var(--warn); font-size: .85rem; }
+
+  .posts { display: grid; gap: 10px; margin-top: 12px; }
+  .post { padding: 12px; background: #fff; border-left: 4px solid var(--acc); border-radius: 8px; font-size: .88rem; }
+  .post b { display: block; text-transform: capitalize; margin-bottom: 4px; }
+  .status { font-size: .8rem; color: var(--mut); margin-top: 8px; }
+
+  @media (max-width: 800px) { .app { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Done<span>Zo</span></h1>
+    <div id="clock">--:--:--</div>
+  </header>
+
+  <section class="card">
+    <h2>My Tasks</h2>
+    <div class="add">
+      <input id="taskInput" placeholder="What needs to be done?">
+      <button class="pri" id="addBtn">Add</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="sTotal">0</b><small>Total</small></div>
+      <div class="stat"><b id="sDone">0</b><small>Done</small></div>
+      <div class="stat"><b id="sLeft">0</b><small>Pending</small></div>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="filters">
+      <button data-f="all" class="on">All</button>
+      <button data-f="pending">Pending</button>
+      <button data-f="done">Done</button>
+    </div>
+    <ul id="list"></ul>
+    <button class="clear" id="clearDone">Clear completed</button>
+  </section>
+
+  <section class="card">
+    <h2>Ideas from the web (AJAX)</h2>
+    <p style="font-size:.85rem;color:var(--mut)">Fetch sample posts with jQuery $.getJSON and add them as tasks.</p>
+    <button class="pri" id="loadBtn" style="margin-top:12px">Load ideas</button>
+    <div class="status" id="status"></div>
+    <div class="posts" id="posts"></div>
+  </section>
+</div>
+
+<script>
+$(function () {
+  let tasks = JSON.parse(localStorage.getItem('donezo-tasks')) || [];
+  let filter = 'all';
+
+  const save = () => localStorage.setItem('donezo-tasks', JSON.stringify(tasks));
+  const esc = (s) => $('<div>').text(s).html();
+
+  // live clock with setInterval
+  setInterval(() => $('#clock').text(new Date().toLocaleTimeString('en-IN')), 1000);
+  $('#clock').text(new Date().toLocaleTimeString('en-IN'));
+
+  function render() {
+    const shown = tasks.filter(t => filter === 'all' || (filter === 'done' ? t.done : !t.done));
+    const $ul = $('#list').empty();
+    if (!shown.length) $ul.append('<li class="empty" style="display:block">Nothing here yet</li>');
+    shown.forEach(t => {
+      $ul.append(`<li class="${t.done ? 'done' : ''}" data-id="${t.id}">
+        <input type="checkbox" ${t.done ? 'checked' : ''}>
+        <div class="txt">${esc(t.text)}<br><small>${t.time}</small></div>
+        <button class="x" title="Delete">&times;</button></li>`);
+    });
+    const done = tasks.filter(t => t.done).length;
+    $('#sTotal').text(tasks.length); $('#sDone').text(done); $('#sLeft').text(tasks.length - done);
+    $('#barFill').css('width', tasks.length ? (done / tasks.length * 100) + '%' : '0%');
+  }
+
+  function add(text) {
+    text = $.trim(text);
+    if (!text) return;
+    tasks.unshift({ id: Date.now() + Math.random(), text, done: false, time: new Date().toLocaleString('en-IN') });
+    save(); render();
+  }
+
+  $('#addBtn').on('click', () => { add($('#taskInput').val()); $('#taskInput').val('').focus(); });
+  $('#taskInput').on('keypress', (e) => { if (e.which === 13) $('#addBtn').click(); });
+
+  $('#list').on('change', 'input[type=checkbox]', function () {
+    const id = $(this).closest('li').data('id');
+    const t = tasks.find(x => x.id == id); t.done = this.checked; save(); render();
+  });
+  $('#list').on('click', '.x', function () {
+    const id = $(this).closest('li').data('id');
+    $(this).closest('li').slideUp(180, () => { tasks = tasks.filter(x => x.id != id); save(); render(); });
+  });
+  $('.filters').on('click', 'button', function () {
+    $('.filters button').removeClass('on'); $(this).addClass('on'); filter = $(this).data('f'); render();
+  });
+  $('#clearDone').on('click', () => { tasks = tasks.filter(t => !t.done); save(); render(); });
+
+  // AJAX
+  $('#loadBtn').on('click', function () {
+    $('#status').text('Loading...');
+    $.getJSON('https://jsonplaceholder.typicode.com/posts?_limit=4')
+      .done((data) => {
+        $('#status').text('Loaded ' + data.length + ' ideas. Click one to add as a task.');
+        $('#posts').html(data.map(p => `<div class="post" data-t="${esc(p.title)}" style="cursor:pointer"><b>${esc(p.title)}</b>${esc(p.body.slice(0, 70))}...</div>`).join(''));
+      })
+      .fail(() => $('#status').text('Could not load (check internet connection).'));
+  });
+  $('#posts').on('click', '.post', function () { add($(this).data('t')); $(this).fadeOut(200); });
+
+  render();
+});
+</script>
+</body>
+</html>
