@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhaaga | Rakhi Studio</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root { --maroon:#8a1f4d; --gold:#e8a93a; --cream:#fffaf5; --ink:#3a2530; --rose:#e0457b; --mut:#8c7480; }
+  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(180deg, #fff1f6 0%, #fffaf5 40%, #fff 100%); color: var(--ink); }
+
+  .offer { background: linear-gradient(90deg, #ffd6e4, #ffe9c2); color: var(--maroon); font-weight: 600; text-align: center; padding: 8px; font-size: .85rem; letter-spacing: .06em; }
+  header { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-bottom: 1px solid #ecd9bd; display: flex; align-items: center; justify-content: space-between; padding: 12px 5%; flex-wrap: wrap; gap: 10px; }
+  .logo { font-family: Georgia, serif; font-size: 1.7rem; font-weight: 700; color: var(--maroon); }
+  .logo span { color: var(--gold); }
+  nav { display: flex; gap: 22px; align-items: center; }
+  nav a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: .92rem; }
+  nav a:hover { color: var(--rose); }
+  .cartBtn { background: var(--maroon); color: #fff; border: 0; padding: 9px 18px; border-radius: 99px; cursor: pointer; font: inherit; font-weight: 600; }
+  .cartBtn b { background: var(--gold); color: var(--maroon); padding: 1px 8px; border-radius: 99px; margin-left: 6px; }
+
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 30px; max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
+  .hero small { color: var(--rose); letter-spacing: .3em; font-weight: 700; }
+  .hero h1 { font-family: Georgia, serif; font-size: clamp(2.3rem, 5vw, 3.8rem); color: var(--maroon); line-height: 1.1; margin: 10px 0 16px; }
+  .hero h1 em { color: var(--rose); }
+  .hero p { color: var(--mut); max-width: 440px; margin-bottom: 22px; line-height: 1.6; }
+  .cta { display: inline-block; background: var(--rose); color: #fff; padding: 13px 30px; border-radius: 99px; text-decoration: none; font-weight: 700; box-shadow: 0 8px 20px rgba(194,24,91,.3); }
+  .heroArt { position: relative; padding: 12px; background: #fff; border-radius: 28px; box-shadow: 0 20px 44px rgba(224,69,123,.25); transform: rotate(2deg); animation: float 5s ease-in-out infinite; }
+  .heroArt img { display: block; width: 100%; border-radius: 20px; }
+  .heroArt::after { content: 'Handpicked with love'; position: absolute; left: -14px; bottom: 22px; background: var(--rose); color: #fff; font-size: .8rem; font-weight: 700; padding: 8px 16px; border-radius: 99px; box-shadow: 0 8px 16px rgba(224,69,123,.35); }
+  @keyframes float { 50% { transform: translateY(-10px) rotate(1deg); } }
+
+  .sec { max-width: 1100px; margin: 0 auto; padding: 40px 5%; }
+  .sec h2 { font-family: Georgia, serif; font-size: 2rem; color: var(--maroon); text-align: center; }
+  .sec > p.sub { text-align: center; color: var(--mut); margin: 6px 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
+  .prod { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 20px rgba(90,18,48,.08); transition: transform .25s; display: flex; flex-direction: column; }
+  .prod:hover { transform: translateY(-6px); }
+  .prod .img { height: 190px; display: grid; place-items: center; }
+  .prod .img svg { width: 62%; }
+  .prod .info { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .prod h3 { font-size: 1.02rem; color: var(--maroon); }
+  .prod p { font-size: .83rem; color: var(--mut); flex: 1; }
+  .prod .row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .price { font-weight: 800; font-size: 1.15rem; }
+  .add { border: 1.5px solid var(--rose); background: transparent; color: var(--rose); border-radius: 99px; padding: 7px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+  .add:hover { background: var(--rose); color: #fff; }
+
+  .gift { display: grid; grid-template-columns: 300px 1fr; gap: 30px; align-items: center; background: linear-gradient(120deg, #fff 0%, #ffeaf2 100%); border-radius: 26px; padding: 26px; box-shadow: 0 10px 30px rgba(224,69,123,.12); }
+  .gift img { width: 100%; border-radius: 18px; }
+  .gift small { color: var(--rose); font-weight: 800; letter-spacing: .25em; }
+  .gift h2 { text-align: left; margin: 6px 0 10px; }
+  .gift p { color: var(--mut); line-height: 1.6; margin-bottom: 16px; }
+  @media (max-width: 760px) { .gift { grid-template-columns: 1fr; text-align: center; } .gift h2 { text-align: center; } }
+  .perks { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; text-align: center; }
+  .perk { background: #fff; padding: 22px; border-radius: 14px; }
+  .perk b { color: var(--maroon); display: block; margin-bottom: 4px; }
+  .perk span { font-size: .85rem; color: var(--mut); }
+
+  footer { background: #ffe3ee; color: var(--maroon); text-align: center; padding: 22px; margin-top: 40px; font-size: .9rem; }
+
+  /* cart drawer */
+  #overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: .25s; z-index: 30; }
+  #drawer { position: fixed; top: 0; right: -420px; width: min(400px, 92vw); height: 100%; background: #fff; z-index: 40; transition: right .3s; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,.2); }
+  body.open #overlay { opacity: 1; pointer-events: auto; } body.open #drawer { right: 0; }
+  #drawer h3 { padding: 18px; font-family: Georgia, serif; color: var(--maroon); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+  #drawer h3 button { background: none; border: 0; font-size: 1.5rem; cursor: pointer; }
+  #items { flex: 1; overflow: auto; padding: 14px; display: grid; gap: 12px; align-content: start; }
+  .ci { display: grid; grid-template-columns: 54px 1fr auto; gap: 10px; align-items: center; background: var(--cream); padding: 10px; border-radius: 12px; }
+  .ci .th { width: 54px; height: 54px; border-radius: 10px; display: grid; place-items: center; } .ci .th svg { width: 70%; }
+  .ci b { font-size: .88rem; } .ci small { color: var(--mut); display: block; }
+  .qty { display: flex; align-items: center; gap: 6px; }
+  .qty button { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--rose); background: #fff; cursor: pointer; color: var(--rose); }
+  .tot { padding: 16px; border-top: 1px solid #eee; }
+  .tot .l { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.15rem; margin-bottom: 10px; }
+  .tot button { width: 100%; padding: 13px; border: 0; border-radius: 99px; background: var(--rose); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+  .none { text-align: center; color: var(--mut); padding: 30px; }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 80px); background: var(--maroon); color: #fff; padding: 11px 24px; border-radius: 99px; transition: .3s; z-index: 50; }
+  #toast.show { transform: translate(-50%, 0); }
+
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; text-align: center; } .hero p { margin-inline: auto; } .heroArt { max-width: 320px; margin: auto; } nav a:not(.cartBtn) { display: none; } }
+</style>
+</head>
+<body>
+<div class="offer">Festive offer: free roli-chawal &amp; greeting card with every rakhi</div>
+
+<header>
+  <div class="logo">Dhaa<span>ga</span></div>
+  <nav>
+    <a href="#top">Home</a><a href="#shop">Shop</a><a href="#promise">Our promise</a>
+    <button class="cartBtn" id="openCart">Cart<b id="cnt">0</b></button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div>
+    <small>RAKSHA BANDHAN SPECIAL</small>
+    <h1>Tie the bond with a <em>thread of love</em></h1>
+    <p>Handpicked designer rakhis for brothers, sisters and everyone you hold close. Delivered with a smile.</p>
+    <a class="cta" href="#shop">Shop rakhis</a>
+  </div>
+  <div class="heroArt"><img src="images/raksha-card.png" alt="Happy Raksha Bandhan card and thali"></div>
+</section>
+
+<section class="sec" id="shop">
+  <h2>The Rakhi Collection</h2>
+  <p class="sub">Pick a thread that fits their personality.</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="sec">
+  <div class="gift">
+    <img src="images/raksha-card.png" alt="Raksha Bandhan gift set">
+    <div>
+      <small>COMPLETE GIFT SET</small>
+      <h2>Card + Pooja Thali with every order</h2>
+      <p>Each rakhi comes with a Raksha Bandhan greeting card, roli and chawal, so the celebration is ready the moment the parcel opens.</p>
+      <a class="cta" href="#shop">Pick your rakhi</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="promise">
+  <div class="perks">
+    <div class="perk"><b>Handcrafted</b><span>Made by skilled artisans</span></div>
+    <div class="perk"><b>Safe delivery</b><span>Reaches before the festival</span></div>
+    <div class="perk"><b>Gift ready</b><span>Roli, chawal &amp; card included</span></div>
+    <div class="perk"><b>Easy returns</b><span>7-day hassle free</span></div>
+  </div>
+</section>
+
+<footer>Dhaaga Rakhi Studio &bull; Celebrate the bond, share the love</footer>
+
+<div id="overlay"></div>
+<aside id="drawer">
+  <h3>Your Cart <button id="closeCart">&times;</button></h3>
+  <div id="items"></div>
+  <div class="tot"><div class="l"><span>Total</span><span id="total">Rs 0</span></div><button id="checkout">Checkout</button></div>
+</aside>
+<div id="toast"></div>
+
+<script>
+// ---- rakhi artwork (inline SVG, no images needed) ----
+const art = (c1, c2, c3) => `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 60 Q50 20 100 50" stroke="${c1}" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M200 60 Q150 20 100 50" stroke="${c1}" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <circle cx="30" cy="48" r="5" fill="${c3}"/><circle cx="55" cy="38" r="5" fill="${c3}"/><circle cx="170" cy="48" r="5" fill="${c3}"/><circle cx="145" cy="38" r="5" fill="${c3}"/>
+  <circle cx="100" cy="68" r="34" fill="${c2}"/><circle cx="100" cy="68" r="26" fill="none" stroke="${c3}" stroke-width="3"/>
+  <circle cx="100" cy="68" r="13" fill="${c1}"/><circle cx="100" cy="68" r="5" fill="${c3}"/>
+  <path d="M100 100 L100 118" stroke="${c1}" stroke-width="4"/><circle cx="100" cy="116" r="5" fill="${c3}"/>
+</svg>`;
+
+const products = [
+  { id: 1, name: 'Royal Maroon Zari', desc: 'Gold zari centrepiece on a deep maroon thread.', price: 249, bg: '#f9d6df', a: ['#8e1b3d', '#d9a441', '#fff3c4'] },
+  { id: 2, name: 'Peacock Blue Beads', desc: 'Shimmering blue beads with a peacock charm.', price: 199, bg: '#d6ecf7', a: ['#1565c0', '#26a69a', '#ffffff'] },
+  { id: 3, name: 'Silver Om Rakhi', desc: 'Sterling-look Om pendant for a sacred touch.', price: 349, bg: '#e8e8f0', a: ['#455a64', '#cfd8dc', '#ffffff'] },
+  { id: 4, name: 'Kids Cartoon Rakhi', desc: 'Colourful, fun and light for little brothers.', price: 129, bg: '#fff0b8', a: ['#ef6c00', '#ffd54f', '#e53935'] },
+  { id: 5, name: 'Rudraksha Thread', desc: 'Natural rudraksha beads on a cotton thread.', price: 179, bg: '#e6dccb', a: ['#6d4c41', '#a1887f', '#ffe0b2'] },
+  { id: 6, name: 'Pearl Bhaiya-Bhabhi Set', desc: 'Matching rakhi and lumba pair with pearls.', price: 399, bg: '#fde3ee', a: ['#ad1457', '#f8bbd0', '#ffffff'] }
+];
+
+let cart = JSON.parse(localStorage.getItem('dhaaga-cart')) || {};
+const $ = (id) => document.getElementById(id);
+
+$('grid').innerHTML = products.map(p => `
+  <article class="prod">
+    <div class="img" style="background:${p.bg}">${art(...p.a)}</div>
+    <div class="info"><h3>${p.name}</h3><p>${p.desc}</p>
+      <div class="row"><span class="price">Rs ${p.price}</span><button class="add" data-id="${p.id}">Add to cart</button></div>
+    </div></article>`).join('');
+
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t.h); t.h = setTimeout(() => t.classList.remove('show'), 1600); }
+
+function draw() {
+  localStorage.setItem('dhaaga-cart', JSON.stringify(cart));
+  const ids = Object.keys(cart);
+  $('cnt').textContent = ids.reduce((s, i) => s + cart[i], 0);
+  $('items').innerHTML = ids.length ? ids.map(i => {
+    const p = products.find(x => x.id == i);
+    return `<div class="ci"><div class="th" style="background:${p.bg}">${art(...p.a)}</div>
+      <div><b>${p.name}</b><small>Rs ${p.price}</small></div>
+      <div class="qty"><button data-m="${i}">-</button>${cart[i]}<button data-p="${i}">+</button></div></div>`;
+  }).join('') : '<div class="none">Your cart is empty</div>';
+  $('total').textContent = 'Rs ' + ids.reduce((s, i) => s + cart[i] * products.find(x => x.id == i).price, 0);
+}
+
+$('grid').addEventListener('click', (e) => {
+  const id = e.target.dataset.id; if (!id) return;
+  cart[id] = (cart[id] || 0) + 1; draw(); toast('Added to cart');
+});
+$('items').addEventListener('click', (e) => {
+  const p = e.target.dataset.p, m = e.target.dataset.m;
+  if (p) cart[p]++;
+  if (m) { cart[m]--; if (cart[m] <= 0) delete cart[m]; }
+  draw();
+});
+$('openCart').onclick = () => document.body.classList.add('open');
+$('closeCart').onclick = $('overlay').onclick = () => document.body.classList.remove('open');
+$('checkout').onclick = () => {
+  if (!Object.keys(cart).length) return toast('Cart is empty');
+  alert('Thank you! Your order has been placed. Happy Raksha Bandhan!');
+  cart = {}; draw(); document.body.classList.remove('open');
+};
+draw();
+</script>
+</body>
+</html>
