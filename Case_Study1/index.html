@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart India Hackathon</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root { --saffron:#f28c00; --green:#1b8a3a; --navy:#1e2a4a; --soft:#fff8ec; --line:#f0e3cc; --mut:#5f6678; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fffdf8; color: var(--navy); line-height: 1.7; }
+
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom: 3px solid; border-image: linear-gradient(90deg, var(--saffron) 33%, #ddd 33% 66%, var(--green) 66%) 1; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; flex-wrap: wrap; }
+  nav .logo { font-weight: 800; font-size: 1.15rem; color: var(--navy); padding: 14px 0; }
+  nav .logo span { color: var(--saffron); }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; }
+  nav a { display: block; color: var(--navy); text-decoration: none; padding: 16px 15px; font-size: .92rem; font-weight: 600; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  nav a:hover { color: var(--saffron); border-bottom-color: var(--saffron); }
+
+  .hero { max-width: 1050px; margin: 0 auto; padding: 40px 5% 20px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: center; }
+  .hero img { width: 100%; border-radius: 18px; box-shadow: 0 14px 36px rgba(242,140,0,.2); background: #fff; }
+  .hero small { color: var(--green); font-weight: 800; letter-spacing: .25em; }
+  .hero h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.12; margin: 8px 0 12px; }
+  .hero h1 span { color: var(--saffron); }
+  .hero p { color: var(--mut); margin-bottom: 18px; }
+  .btn { display: inline-block; background: var(--saffron); color: #fff; padding: 12px 26px; border-radius: 99px; text-decoration: none; font-weight: 700; box-shadow: 0 8px 18px rgba(242,140,0,.35); }
+
+  .strip { max-width: 1050px; margin: 10px auto 0; padding: 0 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .strip div { background: #fff; border: 1px solid var(--line); border-radius: 14px; text-align: center; padding: 16px 8px; }
+  .strip b { display: block; font-size: 1.6rem; color: var(--green); }
+  .strip span { font-size: .82rem; color: var(--mut); }
+
+  section.s { max-width: 920px; margin: 0 auto; padding: 44px 5%; scroll-margin-top: 60px; }
+  section.s h2 { font-size: 1.8rem; }
+  hr { border: 0; height: 4px; width: 64px; border-radius: 4px; background: linear-gradient(90deg, var(--saffron), var(--green)); margin: 8px 0 20px; }
+  hr.full { width: 100%; height: 1px; background: var(--line); border-radius: 0; margin: 0; }
+  p { margin-bottom: 12px; }
+  .hl { color: var(--green); font-weight: 700; }
+  .or { color: var(--saffron); font-weight: 700; }
+  mark { background: #ffeabf; padding: 0 5px; border-radius: 4px; }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 14px; }
+  .box { background: var(--soft); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .box h3 { margin-bottom: 4px; }
+  ol, ul.plain { margin-left: 22px; }
+  li { margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 10px; overflow: hidden; }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; }
+  th { background: var(--saffron); color: #fff; }
+  blockquote { border-left: 5px solid var(--green); background: #effaf1; padding: 12px 18px; margin: 14px 0; font-style: italic; border-radius: 0 10px 10px 0; }
+  a.res { color: #0b5cd5; }
+  footer { background: var(--navy); color: #c9cfe0; text-align: center; padding: 22px; margin-top: 30px; }
+  footer b { color: var(--saffron); }
+
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } nav ul { width: 100%; justify-content: space-between; } nav a { padding: 10px 5px; font-size: .78rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SIH <span>2026</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#challenges">Challenges</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#placements">Placements</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div>
+    <small>IMAGINE &bull; INNOVATE &bull; IMPLEMENT</small>
+    <h1>Smart India <span>Hackathon</span></h1>
+    <p>India's biggest open innovation platform, where young minds build solutions for real-world problems.</p>
+    <a class="btn" href="#about">Explore SIH</a>
+  </div>
+  <img src="images/sih-banner.png" alt="Smart India Hackathon banner">
+</header>
+
+<div class="strip">
+  <div><b>36 hrs</b><span>Non-stop building</span></div>
+  <div><b>Software</b><span>&amp; Hardware</span></div>
+  <div><b>Ministries</b><span>Give the problems</span></div>
+  <div><b>Pan-India</b><span>Nodal centres</span></div>
+</div>
+
+<section class="s" id="about">
+  <h2>About SIH</h2>
+  <hr>
+  <p><b>Smart India Hackathon (SIH)</b> is a nationwide initiative that brings students together to solve <span class="or">real problems</span> given by ministries, departments and industries.</p>
+  <p>It is organised by the <i>Ministry of Education's Innovation Cell</i> with <u>AICTE</u>.<br>
+  Teams build either a <span class="hl">software</span> solution or a <span class="hl">hardware</span> prototype.</p>
+  <blockquote>Idea &rarr; Team &rarr; Prototype &rarr; Pitch &rarr; Impact</blockquote>
+  <div class="cols">
+    <div class="box"><h3>Software Edition</h3><p>Apps, portals and AI tools built in a 36-hour sprint.</p></div>
+    <div class="box"><h3>Hardware Edition</h3><p>Working prototypes and devices, with <mark>mentor support</mark>.</p></div>
+    <div class="box"><h3>Junior Edition</h3><p>Early innovators from schools get a platform too.</p></div>
+  </div>
+</section>
+<hr class="full">
+
+<section class="s" id="challenges">
+  <h2>Challenges</h2>
+  <hr>
+  <p>Problem statements come from many fields. A few popular themes:</p>
+  <ol>
+    <li>Smart Agriculture and Food Technology</li>
+    <li>Healthcare and Bio-medical Devices</li>
+    <li>Clean Energy and Sustainability</li>
+    <li>Smart Education and Skilling</li>
+    <li>Disaster Management and Transportation</li>
+  </ol>
+  <p><small>Tip: choose a statement you actually care about, it shows in the pitch.</small></p>
+</section>
+<hr class="full">
+
+<section class="s" id="achievements">
+  <h2>Achievements</h2>
+  <hr>
+  <p>Over the years SIH has grown massively. A quick snapshot:</p>
+  <table>
+    <tr><th>Edition</th><th>Highlight</th><th>Impact</th></tr>
+    <tr><td>2017</td><td>First edition launched</td><td>Pilot nationwide</td></tr>
+    <tr><td>2020</td><td>Went fully online</td><td>Record participation</td></tr>
+    <tr><td>2023</td><td>Grand finale across many nodal centres</td><td>Hundreds of ideas shortlisted</td></tr>
+  </table>
+  <p style="margin-top:12px" class="hl">Many winning prototypes have gone on to be used by government bodies.</p>
+</section>
+<hr class="full">
+
+<section class="s" id="placements">
+  <h2>Placements &amp; Career</h2>
+  <hr>
+  <p>A strong SIH project <b><i>boosts your resume</i></b>. Recruiters value:</p>
+  <ul class="plain">
+    <li>Teamwork under deadline pressure</li>
+    <li>Working prototypes and GitHub profiles</li>
+    <li>Presentation and pitching skills</li>
+  </ul>
+  <p>Many finalists receive internships and job offers from startups and large companies.</p>
+</section>
+<hr class="full">
+
+<section class="s" id="resources">
+  <h2>Resources</h2>
+  <hr>
+  <ul class="plain">
+    <li><a class="res" href="https://www.sih.gov.in" target="_blank">Official SIH website</a></li>
+    <li><a class="res" href="https://www.aicte-india.org" target="_blank">AICTE</a></li>
+    <li><a class="res" href="https://iic.mic.gov.in" target="_blank">Institution's Innovation Council</a></li>
+  </ul>
+</section>
+
+<footer><b>Smart India Hackathon</b> &bull; Innovate. Collaborate. Build India.</footer>
+</body>
+</html>
